@@ -5,6 +5,7 @@
 
 import asyncio
 import random
+import time
 
 
 async def producer(queue, id):
@@ -22,7 +23,8 @@ async def consumer(queue):
         print(f"Consumer consumed {item}")
         queue.task_done()
 
-async def main():
+async def asyncio_def():
+    start = time.time()
     queue = asyncio.Queue(maxsize=10)
     producers = [asyncio.create_task(producer(queue, i)) for i in range(3)]
     consumer_task = asyncio.create_task(consumer(queue))
@@ -30,5 +32,8 @@ async def main():
     await queue.join()
     await queue.put(None)
     await consumer_task
+    mp_time = time.time()-start
+    print(f'Асинхронное выполнение: {mp_time}')
 
-asyncio.run(main())
+def async_queue():
+    asyncio.run(asyncio_def())

@@ -22,21 +22,22 @@ def find(word='error'):
     return list
 
 # Синхронная запись
-start = time.time()
-find('error')
-sync_time = time.time() - start
-print(f"Синхронное: {sync_time:.2f} сек")
+def one_thread():
+    start = time.time()
+    find('error')
+    sync_time = time.time() - start
+    print(f"Синхронное: {sync_time:.2f} сек")
 
 
 # Многопоточная запись
-start = time.time()
-threads = []
-for i in range(10):
-    t = threading.Thread(target=find)
-    t.start()
-    threads.append(t)
-for t in threads:
-    t.join()
-thread_time = time.time() - start
-print(f"Многопоточное: {thread_time:.2f} сек")
-
+def any_therds():
+    start = time.time()
+    threads = []
+    for i in range(10):
+        t = threading.Thread(target=find)
+        t.start()
+        threads.append(t)
+    for t in threads:
+        t.join()
+    thread_time = time.time() - start
+    print(f"Многопоточное: {thread_time:.2f} сек")

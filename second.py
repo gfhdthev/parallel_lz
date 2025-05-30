@@ -24,7 +24,7 @@ def write_word(lock, word):
     finally:
         lock.release()
 
-if __name__ == '__main__':
+def multi_processing():
     start = time.time()
     lock = Lock()
     processes = []
