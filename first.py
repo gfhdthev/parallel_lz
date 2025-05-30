@@ -18,6 +18,7 @@ def find(word='error'):
         if word in content:
             list.append(one_file)
     print(list)
+    time.sleep(1)
     return list
 
 # Синхронная запись
@@ -29,9 +30,13 @@ print(f"Синхронное: {sync_time:.2f} сек")
 
 # Многопоточная запись
 start = time.time()
-t = threading.Thread(target=find)
-t.start()
-t.join()
+threads = []
+for i in range(10):
+    t = threading.Thread(target=find)
+    t.start()
+    threads.append(t)
+for t in threads:
+    t.join()
 thread_time = time.time() - start
 print(f"Многопоточное: {thread_time:.2f} сек")
 

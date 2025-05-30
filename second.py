@@ -26,7 +26,7 @@ if __name__ == '__main__':
     start = time.time()
     lock = Lock()
 
-    for num in range(7):
+    for num in range(10):
         Process(target=f, args=(lock, num)).start()
 
     mp_time = time.time() - start
