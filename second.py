@@ -4,31 +4,38 @@
 
 
 from multiprocessing import Process, Lock
-
 import time
 
 main_file = 'second.txt'
+words = [
+    'fvgnuvirepvbureviowpdfvbdv;biorewv',
+    'vrerevrerevrevervre',
+    'sfv n ntrbtrwsr;biorewv',
+    '798098634;biorewv',
+    'bsbvrebrtbn;biorewv',
+    '65467453264435646;biorewv'
+]
 
-def f(l, i):
-    l.acquire()
+def write_word(lock, word):
+    lock.acquire()
     try:
-        file = open(main_file, "a")
-        file.write('fvgnuvirepvbureviowpdfvbdv;biorewv')
-        file.write('vrerevrerevrevervre')
-        file.write(' sfv n ntrbtrwsr;biorewv')
-        file.write('798098634;biorewv')
-        file.write('bsbvrebrtbn;biorewv')
-        file.write('65467453264435646;biorewv')
+        with open(main_file, "a") as file:
+            file.write(word + "\n")
     finally:
-        l.release()
+        lock.release()
 
 if __name__ == '__main__':
     start = time.time()
     lock = Lock()
+    processes = []
 
-    for num in range(10):
-        Process(target=f, args=(lock, num)).start()
+    for word in words:
+        proc = Process(target=write_word, args=(lock, word))
+        proc.start()
+        processes.append(proc)
+
+    for proc in processes:
+        proc.join()
 
     mp_time = time.time() - start
     print(f"Многопроцессорное вычисление: {mp_time:.2f} сек")
-
